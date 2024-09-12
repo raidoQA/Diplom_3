@@ -24,7 +24,7 @@ class BasePage:
         elements = self.driver.find_elements(*locator)
         return elements
 
-    @allure.step("Скроллинг странцы до элемента")
+    @allure.step("Скроллинг страницы до элемента")
     def scroll_page(self, locator):
         element = self.driver.find_element(*locator)
         self.driver.execute_script("arguments[0].scrollIntoView();", element)
@@ -38,8 +38,8 @@ class BasePage:
         return self.driver.find_element(*locator).text
 
     @allure.step("Ожидание появления элемента")
-    def wait_element(self, locator):
-        WebDriverWait(self.driver, 5).until(expected_conditions.visibility_of_element_located(locator))
+    def wait_element(self, locator, timeout=60):
+        WebDriverWait(self.driver, timeout).until(expected_conditions.visibility_of_element_located(locator))
 
     @allure.step("Получить адрес текущей страницы")
     def get_url(self):
@@ -49,7 +49,7 @@ class BasePage:
     def set_value(self, locator, value):
         self.driver.find_element(*locator).send_keys(value)
 
-    @allure.step("Получить значение аттрибута элемента")
+    @allure.step("Получить значение атрибута элемента")
     def get_attribute(self, locator, attribute):
         element = self.driver.find_element(*locator)
         return element.get_attribute(attribute)
@@ -72,7 +72,7 @@ class BasePage:
         drag_and_drop(self.driver, source, target)
 
     @allure.step("Сформировать заказ из двух ингредиентов и передать номер заказа")
-    def place_order_get_number(self, first_ingredient, second_ingredient, tty = 5):
+    def place_order_get_number(self, first_ingredient, second_ingredient, tty=5):
         self.add_ingredient_to_basket(first_ingredient)
         self.add_ingredient_to_basket(second_ingredient)
         self.click_element(BasePageLocators.basket_button)
@@ -87,7 +87,7 @@ class BasePage:
         self.click_element(BasePageLocators.modal_close_button)
         return number
 
-    @allure.step("Проверка url")
+    @allure.step("Проверка URL")
     def check_url(self, url):
         WebDriverWait(self.driver, 5).until(expected_conditions.url_to_be(url))
 

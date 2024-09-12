@@ -1,24 +1,20 @@
 import allure
-
-import locators.order_feed_page_locators
 from locators.base_page_locators import BasePageLocators
 from locators.order_feed_page_locators import OrderFeedPageLocators
 from page_objects.base_page import BasePage
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions
 from data import Urls
 
 class OrderFeedPage(BasePage):
 
     @allure.step("Проверить отображение заказа в ленте заказов по номеру")
     def is_displayed_order_in_feed(self, order_number):
-        order_locator = [By.XPATH, locators.order_feed_page_locators.OrderFeedPageLocators.order_feed_locator_form.format(order_number=order_number)]
+        order_locator = [By.XPATH, OrderFeedPageLocators.order_feed_locator_form.format(order_number=order_number)]
         return self.is_elements_exist(order_locator)
 
     @allure.step("Проверить отображение заказа в истории заказов по номеру")
     def is_displayed_order_in_history(self, order_number):
-        order_locator = [By.XPATH, locators.order_feed_page_locators.OrderFeedPageLocators.order_history_locator_form.format(order_number=order_number)]
+        order_locator = [By.XPATH, OrderFeedPageLocators.order_history_locator_form.format(order_number=order_number)]
         return self.is_elements_exist(order_locator)
 
     @allure.step("Проверить отображение заказа в списке заказов в работе по номеру")
@@ -27,20 +23,20 @@ class OrderFeedPage(BasePage):
         return self.is_elements_exist(order_locator)
 
     @staticmethod
-    @allure.step("Получить элемент с номером заказа из списке готовых заказов")
+    @allure.step("Получить элемент с номером заказа из списка готовых заказов")
     def order_number_in_ready_box_element(order_number):
-        element = [By.XPATH, locators.order_feed_page_locators.OrderFeedPageLocators.order_list_locator_form.format(order_number=order_number)]
+        element = [By.XPATH, OrderFeedPageLocators.order_list_locator_form.format(order_number=order_number)]
         return element
 
     @staticmethod
     @allure.step("Получить элемент с номером заказа из списка заказов в работе")
     def order_number_in_in_process_box_element(order_number):
-        element = [By.XPATH, locators.order_feed_page_locators.OrderFeedPageLocators.order_list_ready_locator_form.format(order_number=order_number)]
+        element = [By.XPATH, OrderFeedPageLocators.order_list_ready_locator_form.format(order_number=order_number)]
         return element
 
     @allure.step("Ожидание появления заказа в списке")
     def wait_order_in_box(self, locator):
-        WebDriverWait(self.driver, 60).until(expected_conditions.visibility_of_element_located(locator))
+        self.wait_element(locator)
 
     @allure.step("Если кликнуть на заказ, откроется всплывающее окно с деталями")
     def feed_page_open_order(self):
